@@ -192,7 +192,14 @@ class OutputBuffer:
         while len(lines) > 0 and lines[-1] == "":
             lines.pop()
 
-        lines.insert(0, self._get_header_text(self.output))
+        # 添加自定义开始和结束标记
+        custom_begin = "============IPYTHON-BEGIN============"
+        custom_end = "=============IPYTHON-END============="
+
+        lines.insert(0, custom_begin)
+        lines.insert(1, self._get_header_text(self.output))
+        lines.append(custom_end)
+
         return lines, len(lines) - 1 + virtual_lines
 
     def show_virtual_output(self, anchor: Position) -> None:
@@ -274,9 +281,7 @@ class OutputBuffer:
         offset = 0
         if self.options.cover_empty_lines:
             offset = self.calculate_offset(anchor)
-            win_row = (
-                self._buffer_to_window_lineno(anchor.lineno + offset) + 1
-            )
+            win_row = self._buffer_to_window_lineno(anchor.lineno + offset) + 1
         else:
             win_row = self._buffer_to_window_lineno(anchor.lineno + 1)
 
