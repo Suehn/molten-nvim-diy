@@ -242,6 +242,10 @@ class OutputBuffer:
             lines = lines[: self.options.virt_text_max_lines - 1]
             lines.append(f"󰁅 {l - self.options.virt_text_max_lines + 1} More Lines ")
 
+        # 加入俩空行
+        lines.append("")
+        lines.append("")
+
         self.virt_text_id = buf.api.set_extmark(
             self.extmark_namespace,
             win_row,
